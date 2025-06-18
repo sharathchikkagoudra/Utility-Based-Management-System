@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Service Provider Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold mb-6">Service Provider Dashboard</h1>
+        
+        {% for provider in providers|groupby('id') %}
+        <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+            <div class="flex justify-between items-center mb-4">
+                <h2 class="text-2xl font-semibold">{{ provider.list[0].name }}</h2>
+                <div class="text-gray-600">
+                    <span>{{ provider.list[0].email }}</span> | 
+                    <span>{{ provider.list[0].phone }}</span>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <strong>Specialization:</strong> 
+                {{ provider.list[0].specialization }}
+            </div>
+
+            <h3 class="text-xl font-semibold mt-6 mb-4">Service Requests</h3>
+            
+            {% set provider_requests = providers|selectattr('id', 'equalto', provider.list[0].id)|selectattr('request_id')|list %}
+            
+            {% if provider_requests %}
+            <table class="w-full border-collapse">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border p-2">Service</th>
+                        <th class="border p-2">Customer Name</th>
+                        <th class="border p-2">Contact Info</th>
+                        <th class="border p-2">Request Date</th>
+                        <th class="border p-2">Status</th>
+                        <th class="border p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for request in provider_requests %}
+                    <tr>
+                        <td class="border p-2">{{ request.service_name }}</td>
+                        <td class="border p-2">{{ request.customer_name }}</td>
+                        <td class="border p-2">{{ request.contact_info }}</td>
+                        <td class="border p-2">{{ request.request_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td class="border p-2">
+                            <span class="
+                                {% if request.status == 'Pending' %}text-yellow-600
+                                {% elif request.status == 'In Progress' %}text-blue-600
+                                {% else %}text-green-600
+                                {% endif %}
+                            ">
+                                {{ request.status }}
+                            </span>
+                        </td>
+                        <td class="border p-2">
+                            <select class="w-full p-1 border rounded">
+                                <option>Change Status</option>
+                                <option>Pending</option>
+                                <option>In Progress</option>
+                                <option>Completed</option>
+                            </select>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            {% else %}
+            <p class="text-gray-500 text-center py-4">
+                No service requests at the moment.
+            </p>
+            {% endif %}
+        </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

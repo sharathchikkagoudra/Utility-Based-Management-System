@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Utility Management System</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100">
+    <div class="container mx-auto mt-20 text-center">
+        <h1 class="text-4xl font-bold mb-10">Utility Management System</h1>
+        
+        <div class="flex justify-center space-x-10">
+            <a href="{{ url_for('customer_services') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg">
+                Customer
+            </a>
+            
+            <a href="{{ url_for('service_provider') }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-4 px-6 rounded-lg">
+                Service Provider
+            </a>
+        </div>
+    </div>
+</body>
+</html>
